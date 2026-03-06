@@ -2,7 +2,7 @@ package com.main;
 /*
  * --------------------------------Main Class------------------------------------
  * 
- * Entry point of Use Case 1.
+ * Entry point of Use Case 2.
  * 
  * Execution Flow:
  * 	1. Take input from user
@@ -10,24 +10,28 @@ package com.main;
  * 	3. Create objects
  * 	4. Persist data
  * 	5. Display Confirmation
+ *  6. Authenticate user 
  * 
  * @author Preetham
- * @version 1.0
+ * @version 2.0
  */
 
 import java.io.IOException;
 import java.util.Scanner;
 
+import com.employeeauthentication.AuthenticationService;
+import com.employeeauthentication.Session;
 import com.employeeregistration.Employee;
 import com.employeeregistration.UserAccount;
 import com.validation.ValidationException;
 import com.validation.Validator;
 
 
+
 public class EmployeePayrollApp {
 	public static void main(String[] args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("=== EMPLOYEE REGISTRATION ===");
+
 		try {
 			System.out.println("Enter name: ");
 			String name = scanner.nextLine();
@@ -47,6 +51,18 @@ public class EmployeePayrollApp {
 		} catch (IOException e) {
 			System.out.println("\nError saving employee data!");
 		}
+		
+		 AuthenticationService auth = new AuthenticationService();
+	        Session session = auth.login();
+
+	        if (session != null) {
+	            System.out.println("\n" + session);
+	            if (!session.isExpired()) {
+	                System.out.println("Session active and valid.");
+	            } else {
+	                System.out.println("Session expired.");
+	            }
+	        }
 		
 		scanner.close();
 	}
